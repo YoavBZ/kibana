@@ -83,6 +83,7 @@ exports[`ExplainCollectionInterval collection interval setting updates should sh
     </EuiTitle>
     <EuiTextColor
       color="subdued"
+      component="span"
     >
       <span
         className="euiTextColor euiTextColor--subdued"
@@ -199,18 +200,28 @@ exports[`ExplainCollectionInterval collection interval setting updates should sh
             data-test-subj="enableCollectionInterval"
             fill={true}
             iconSide="left"
+            isLoading={true}
             onClick={[Function]}
             type="button"
           >
             <button
               className="euiButton euiButton--primary euiButton--fill"
               data-test-subj="enableCollectionInterval"
+              disabled={true}
               onClick={[Function]}
               type="button"
             >
               <span
                 className="euiButton__content"
               >
+                <EuiLoadingSpinner
+                  className="euiButton__spinner"
+                  size="m"
+                >
+                  <div
+                    className="euiLoadingSpinner euiLoadingSpinner--medium euiButton__spinner"
+                  />
+                </EuiLoadingSpinner>
                 <span
                   className="euiButton__text"
                 >
@@ -251,6 +262,7 @@ exports[`ExplainCollectionInterval should explain about xpack.monitoring.collect
     </EuiTitle>
     <EuiTextColor
       color="subdued"
+      component="span"
     >
       <span
         className="euiTextColor euiTextColor--subdued"
@@ -367,6 +379,7 @@ exports[`ExplainCollectionInterval should explain about xpack.monitoring.collect
             data-test-subj="enableCollectionInterval"
             fill={true}
             iconSide="left"
+            isLoading={false}
             onClick={[Function]}
             type="button"
           >

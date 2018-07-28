@@ -48,6 +48,8 @@ import {
   VisualizeListingTableProvider,
   DashboardAddPanelProvider,
   DashboardPanelActionsProvider,
+  FlyoutProvider,
+  VisualizationProvider,
 } from './services';
 
 export default async function ({ readConfigFile }) {
@@ -57,7 +59,7 @@ export default async function ({ readConfigFile }) {
     testFiles: [
       require.resolve('./apps/console'),
       require.resolve('./apps/getting_started'),
-      // require.resolve('./apps/context'),
+      require.resolve('./apps/context'),
       require.resolve('./apps/dashboard'),
       require.resolve('./apps/discover'),
       require.resolve('./apps/home'),
@@ -101,6 +103,8 @@ export default async function ({ readConfigFile }) {
       visualizeListingTable: VisualizeListingTableProvider,
       dashboardAddPanel: DashboardAddPanelProvider,
       dashboardPanelActions: DashboardPanelActionsProvider,
+      flyout: FlyoutProvider,
+      visualization: VisualizationProvider,
     },
     servers: commonConfig.get('servers'),
 

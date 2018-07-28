@@ -19,9 +19,10 @@
 
 import _ from 'lodash';
 import { KibanaMap } from 'ui/vis/map/kibana_map';
-import { Observable } from 'rxjs/Rx';
+import * as Rx from 'rxjs';
+import { filter, first } from 'rxjs/operators';
 import 'ui/vis/map/service_settings';
-
+import { toastNotifications } from 'ui/notify';
 
 const MINZOOM = 0;
 const MAXZOOM = 22;//increase this to 22. Better for WMS
@@ -42,6 +43,10 @@ export function BaseMapsVisualizationProvider(serviceSettings) {
       this._chartData = null; //reference to data currently on the map.
       this._baseLayerDirty = true;
       this._mapIsLoaded = this._makeKibanaMap();
+    }
+
+    isLoaded() {
+      return this._mapIsLoaded;
     }
 
     destroy() {
@@ -137,7 +142,7 @@ export function BaseMapsVisualizationProvider(serviceSettings) {
             this._setTmsLayer(firstRoadMapLayer);
           }
         } catch (e) {
-          this._notify.warning(e.message);
+          toastNotifications.addWarning(e.message);
           return;
         }
         return;
@@ -169,7 +174,7 @@ export function BaseMapsVisualizationProvider(serviceSettings) {
 
         }
       } catch (tmsLoadingError) {
-        this._notify.warning(tmsLoadingError.message);
+        toastNotifications.addWarning(tmsLoadingError.message);
       }
 
 
@@ -226,13 +231,12 @@ export function BaseMapsVisualizationProvider(serviceSettings) {
       }
 
       const maxTimeForBaseLayer = 10000;
-      const interval$ = Observable.interval(10).filter(() => !this._baseLayerDirty);
-      const timer$ = Observable.timer(maxTimeForBaseLayer);
+      const interval$ = Rx.interval(10).pipe(filter(() => !this._baseLayerDirty));
+      const timer$ = Rx.timer(maxTimeForBaseLayer);
 
-      return Observable.race(interval$, timer$).first().toPromise();
+      return Rx.race(interval$, timer$).pipe(first()).toPromise();
 
     }
 
   };
 }
-

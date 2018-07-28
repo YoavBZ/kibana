@@ -101,7 +101,7 @@ export class SavedObjectsRepository {
    * @param {array} objects - [{ type, id, attributes }]
    * @param {object} [options={}]
    * @property {boolean} [options.overwrite=false] - overwrites existing documents
-   * @returns {promise} - [{ id, type, version, attributes, error: { message } }]
+   * @returns {promise} -  {saved_objects: [[{ id, type, version, attributes, error: { message } }]}
    */
   async bulkCreate(objects, options = {}) {
     const {
@@ -135,37 +135,46 @@ export class SavedObjectsRepository {
       ]), []),
     });
 
-    return items.map((response, i) => {
-      const {
-        error,
-        _id: responseId,
-        _version: version,
-      } = Object.values(response)[0];
+    return {
+      saved_objects: items.map((response, i) => {
+        const {
+          error,
+          _id: responseId,
+          _version: version,
+        } = Object.values(response)[0];
 
-      const {
-        id = responseId,
-        type,
-        attributes,
-      } = objects[i];
+        const {
+          id = responseId,
+          type,
+          attributes,
+        } = objects[i];
 
-      if (error) {
+        if (error) {
+          if (error.type === 'version_conflict_engine_exception') {
+            return {
+              id,
+              type,
+              error: { statusCode: 409, message: 'version conflict, document already exists' }
+            };
+          }
+          return {
+            id,
+            type,
+            error: {
+              message: error.reason || JSON.stringify(error)
+            }
+          };
+        }
+
         return {
           id,
           type,
-          error: {
-            message: error.reason || JSON.stringify(error)
-          }
+          updated_at: time,
+          version,
+          attributes
         };
-      }
-
-      return {
-        id,
-        type,
-        updated_at: time,
-        version,
-        attributes
-      };
-    });
+      })
+    };
   }
 
   /**
@@ -193,7 +202,7 @@ export class SavedObjectsRepository {
     const indexNotFound = response.error && response.error.type === 'index_not_found_exception';
     if (docNotFound || indexNotFound) {
       // see "404s from missing index" above
-      throw errors.createGenericNotFoundError();
+      throw errors.createGenericNotFoundError(type, id);
     }
 
     throw new Error(
@@ -352,7 +361,7 @@ export class SavedObjectsRepository {
     const indexNotFound = response.status === 404;
     if (docNotFound || indexNotFound) {
       // see "404s from missing index" above
-      throw errors.createGenericNotFoundError();
+      throw errors.createGenericNotFoundError(type, id);
     }
 
     const { updated_at: updatedAt } = response._source;
@@ -394,7 +403,7 @@ export class SavedObjectsRepository {
 
     if (response.status === 404) {
       // see "404s from missing index" above
-      throw errors.createGenericNotFoundError();
+      throw errors.createGenericNotFoundError(type, id);
     }
 
     return {

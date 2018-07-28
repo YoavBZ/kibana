@@ -20,7 +20,6 @@
 import { INSTRUCTION_VARIANT } from '../../../common/tutorials/instruction_variant';
 import {
   WINDOWS_SERVER_INSTRUCTIONS,
-  IMPORT_DASHBOARD_UNIX,
   EDIT_CONFIG,
   START_SERVER_UNIX,
   DOWNLOAD_SERVER_RPM,
@@ -34,16 +33,11 @@ import {
   RAILS_CLIENT_INSTRUCTIONS,
   RACK_CLIENT_INSTRUCTIONS,
   JS_CLIENT_INSTRUCTIONS,
+  GO_CLIENT_INSTRUCTIONS,
+  JAVA_CLIENT_INSTRUCTIONS,
 } from './apm_client_instructions';
 
-export function onPremInstructions(server) {
-  let apmIndexPattern = 'apm*';
-  try {
-    apmIndexPattern = server.config().get('xpack.apm.indexPattern');
-  } catch (error) {
-    // ignore error when config does not contain 'xpack.apm.indexPattern'.
-    // This is expected when APM plugin is not running.
-  }
+export function onPremInstructions(apmIndexPattern) {
 
   return {
     instructionSets: [
@@ -54,7 +48,6 @@ export function onPremInstructions(server) {
             id: INSTRUCTION_VARIANT.OSX,
             instructions: [
               DOWNLOAD_SERVER_OSX,
-              IMPORT_DASHBOARD_UNIX,
               EDIT_CONFIG,
               START_SERVER_UNIX,
             ],
@@ -63,7 +56,6 @@ export function onPremInstructions(server) {
             id: INSTRUCTION_VARIANT.DEB,
             instructions: [
               DOWNLOAD_SERVER_DEB,
-              IMPORT_DASHBOARD_UNIX,
               EDIT_CONFIG,
               START_SERVER_UNIX,
             ],
@@ -72,7 +64,6 @@ export function onPremInstructions(server) {
             id: INSTRUCTION_VARIANT.RPM,
             instructions: [
               DOWNLOAD_SERVER_RPM,
-              IMPORT_DASHBOARD_UNIX,
               EDIT_CONFIG,
               START_SERVER_UNIX,
             ],
@@ -130,13 +121,21 @@ export function onPremInstructions(server) {
             id: INSTRUCTION_VARIANT.JS,
             instructions: JS_CLIENT_INSTRUCTIONS,
           },
+          {
+            id: INSTRUCTION_VARIANT.GO,
+            instructions: GO_CLIENT_INSTRUCTIONS,
+          },
+          {
+            id: INSTRUCTION_VARIANT.JAVA,
+            instructions: JAVA_CLIENT_INSTRUCTIONS,
+          },
         ],
         statusCheck: {
           title: 'Agent status',
           text:
-            'Make sure you application is running, and the agents are sending data',
+            'Make sure your application is running and the agents are sending data.',
           btnLabel: 'Check agent status',
-          success: 'Data succesfully received from one or more agents',
+          success: 'Data successfully received from one or more agents',
           error: `No data has been received from agents yet`,
           esHitsCheck: {
             index: apmIndexPattern,

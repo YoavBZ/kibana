@@ -17,7 +17,7 @@ import {
   ERROR_EXC_HANDLED,
   ERROR_CULPRIT
 } from '../../../../../common/constants';
-import { createWatch } from '../../../../services/rest';
+import { createWatch } from '../../../../services/rest/watcher';
 
 function getSlackPathUrl(slackUrl) {
   if (slackUrl) {
@@ -150,9 +150,9 @@ export async function createErrorGroupWatch({
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
+        body: `__json__::${JSON.stringify({
           text: slackTemplate
-        })
+        })}`
       }
     };
   }

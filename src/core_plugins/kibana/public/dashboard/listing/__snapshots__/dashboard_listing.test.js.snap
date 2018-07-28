@@ -6,12 +6,13 @@ exports[`after fetch hideWriteControls 1`] = `
   data-test-subj="dashboardLandingPage"
   restrictWidth={false}
 >
-  <EuiPageBody>
+  <EuiPageBody
+    restrictWidth={false}
+  >
     <EuiPageContent
-      className="dashboardLandingPage__content"
+      className="dashboardLandingPageContent"
       horizontalPosition="center"
       panelPaddingSize="l"
-      verticalPosition="center"
     >
       <EuiText
         grow={true}
@@ -19,6 +20,7 @@ exports[`after fetch hideWriteControls 1`] = `
         <h2>
           <EuiTextColor
             color="subdued"
+            component="span"
           >
             Looks like you don't have any dashboards.
           </EuiTextColor>
@@ -35,12 +37,13 @@ exports[`after fetch initialFilter 1`] = `
   data-test-subj="dashboardLandingPage"
   restrictWidth={false}
 >
-  <EuiPageBody>
+  <EuiPageBody
+    restrictWidth={false}
+  >
     <EuiPageContent
-      className="dashboardLandingPage__content"
+      className="dashboardLandingPageContent"
       horizontalPosition="center"
       panelPaddingSize="l"
-      verticalPosition="center"
     >
       <div>
         <EuiFlexGroup
@@ -187,12 +190,13 @@ exports[`after fetch renders call to action when no dashboards exist 1`] = `
   data-test-subj="dashboardLandingPage"
   restrictWidth={false}
 >
-  <EuiPageBody>
+  <EuiPageBody
+    restrictWidth={false}
+  >
     <EuiPageContent
-      className="dashboardLandingPage__content"
+      className="dashboardLandingPageContent"
       horizontalPosition="center"
       panelPaddingSize="l"
-      verticalPosition="center"
     >
       <div>
         <EuiEmptyPrompt
@@ -247,12 +251,13 @@ exports[`after fetch renders table rows 1`] = `
   data-test-subj="dashboardLandingPage"
   restrictWidth={false}
 >
-  <EuiPageBody>
+  <EuiPageBody
+    restrictWidth={false}
+  >
     <EuiPageContent
-      className="dashboardLandingPage__content"
+      className="dashboardLandingPageContent"
       horizontalPosition="center"
       panelPaddingSize="l"
-      verticalPosition="center"
     >
       <div>
         <EuiFlexGroup
@@ -399,12 +404,13 @@ exports[`after fetch renders warning when listingLimit is exceeded 1`] = `
   data-test-subj="dashboardLandingPage"
   restrictWidth={false}
 >
-  <EuiPageBody>
+  <EuiPageBody
+    restrictWidth={false}
+  >
     <EuiPageContent
-      className="dashboardLandingPage__content"
+      className="dashboardLandingPageContent"
       horizontalPosition="center"
       panelPaddingSize="l"
-      verticalPosition="center"
     >
       <div>
         <EuiFlexGroup
@@ -582,6 +588,8 @@ exports[`renders empty page in before initial fetch to avoid flickering 1`] = `
   data-test-subj="dashboardLandingPage"
   restrictWidth={false}
 >
-  <EuiPageBody />
+  <EuiPageBody
+    restrictWidth={false}
+  />
 </EuiPage>
 `;
